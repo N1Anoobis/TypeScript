@@ -5,16 +5,27 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { initialState } from './Reducer/Reducer';
-import { reducer } from './Reducer/Reducer';
+import { initialState } from '../../Reducer/Reducer';
+import { reducer } from '../../Reducer/Reducer';
 
-interface Props {
-    onSubmit?: () => void;
-}
 
-const LoginForm: React.FC<Props> = () => {
-
+const LoginForm = () => {
     const [state, dispatch] = useReducer(reducer, initialState);
+    
+    const handleLogin = (e: any) => {
+        e.preventDefault();
+        if (state.username === 'abc@email.com' && state.password === 'password') {
+          dispatch({
+            type: 'loginSuccess',
+            payload: 'Login Successfully'
+          });
+        } else {
+          dispatch({
+            type: 'loginFailed',
+            payload: 'Incorrect username or password'
+          });
+        }
+      };
 
     return (
         <div className="App">
@@ -53,6 +64,7 @@ const LoginForm: React.FC<Props> = () => {
                             variant="contained"
                             color="primary"
                             className="submit"
+                            onClick={(e)=>handleLogin(e)}
                         >
                             Sign In
           </Button>

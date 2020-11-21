@@ -1,12 +1,7 @@
 import React from 'react';
-import LoginForm from './LoginForm';
-// import {Formik, Form} from 'formik';
+import LoginForm from './components/LoginForm/LoginForm';
 
-interface Props {
-  onSubmit?: () => void;
-}
-
-const App: React.FC<Props> = () => {
+const App = () => {
   return (
     <LoginForm />
   );
