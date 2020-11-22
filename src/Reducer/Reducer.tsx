@@ -1,25 +1,25 @@
-type State = {
+export type State = {
     username: string
     password: string
-    isButtonDisabled: boolean
     helperText: string
     isError: boolean
+    isLogged: boolean
 };
 
 export const initialState: State = {
     username: '',
     password: '',
-    isButtonDisabled: true,
     helperText: '',
-    isError: false
+    isError: false,
+    isLogged: false,
 };
 
 type Action = { type: 'setUsername', payload: string }
     | { type: 'setPassword', payload: string }
-    | { type: 'setIsButtonDisabled', payload: boolean }
     | { type: 'loginSuccess', payload: string }
     | { type: 'loginFailed', payload: string }
-    | { type: 'setIsError', payload: boolean };
+    | { type: 'setIsError', payload: boolean }
+    | { type: 'setIsLogged', payload: boolean }
 
 export const reducer = (state: State, action: Action): State => {
     switch (action.type) {
@@ -33,16 +33,11 @@ export const reducer = (state: State, action: Action): State => {
                 ...state,
                 password: action.payload
             };
-        case 'setIsButtonDisabled':
-            return {
-                ...state,
-                isButtonDisabled: action.payload
-            };
         case 'loginSuccess':
             return {
                 ...state,
-                helperText: action.payload,
-                isError: false
+                isError: false,
+                isLogged: true
             };
         case 'loginFailed':
             return {
@@ -54,6 +49,11 @@ export const reducer = (state: State, action: Action): State => {
             return {
                 ...state,
                 isError: action.payload
+            };
+        case 'setIsLogged':
+            return {
+                ...state,
+                isLogged: action.payload
             };
     }
 }
