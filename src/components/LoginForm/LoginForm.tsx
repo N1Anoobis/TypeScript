@@ -1,56 +1,58 @@
-import React, { useReducer } from 'react';
+import React, { useState } from 'react';
 import './LoginForm.css';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { initialState } from '../../Reducer/Reducer';
-import { reducer } from '../../Reducer/Reducer';
+import  {State, loginFailed, loginSuccess }  from '../../Reducer/Reducer';
 import { useHistory } from 'react-router-dom';
+import {  useSelector, useDispatch } from 'react-redux'
 
 const LoginForm = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state)
+  
+  const dispatch = useDispatch();
   const history = useHistory();
 
+  const [formData, setFormData] = useState({
+    mail: '',
+    password: '',
+  });
+
   const login = () => {
+    dispatch(loginSuccess());
     const path = `/content`;
     history.push(path);
   }
+  
+  const failLogin = () => {
+    dispatch(loginFailed('Please enter correct email and password containing minimum of 8 digits, 1 number and 1 upper letter'));
+  }
 
+  const { isLogged } = useSelector((state:State) => ({
+    isLogged: state.isLogged,
+
+  }));
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    if (state.username === 'email@email.com' && state.password === 'pass') {
-      dispatch({
-        type: 'loginSuccess',
-        payload: 'Login Successfully'
-      });
+    if (formData.mail === 'email@email.com' && formData.password === 'pass') {
       login();
     } else {
-      dispatch({
-        type: 'loginFailed',
-        payload: 'Please enter correct email and password containing minimum of 8 digits, 1 number and 1 upper letter'
-      });
+    failLogin();
     }
   };
 
-  const handleUsernameChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setUsername',
-        payload: event.target.value
-      });
-    };
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handlePasswordChange: React.ChangeEventHandler<HTMLInputElement> =
-    (event) => {
-      dispatch({
-        type: 'setPassword',
-        payload: event.target.value
-      });
-    }
+  const logged = useSelector((state: State) => state.isLogged);
+  const text = useSelector((state: State) => state.helperText);
+  console.log(logged)
 
   return (
     <>
@@ -69,10 +71,10 @@ const LoginForm = () => {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
+                name="mail"
                 autoComplete="email"
                 autoFocus
-                onChange={handleUsernameChange}
+                onChange={(e)=>handleChange(e)}
               />
               <TextField
                 variant="outlined"
@@ -84,7 +86,7 @@ const LoginForm = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={handlePasswordChange}
+                onChange={(e)=>handleChange(e)}
               />
               <Button
                 type="submit"
@@ -97,7 +99,7 @@ const LoginForm = () => {
                 Sign In
           </Button>
             </form>
-            {state.helperText}
+            {text}
           </div>
         </Container>
       </div>
