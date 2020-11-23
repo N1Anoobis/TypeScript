@@ -1,10 +1,7 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-// import { State } from '../../Reducer/Reducer';
-// import { reducer } from '../../Reducer/Reducer';
+import React, { useEffect } from 'react';
+import { Redirect } from 'react-router';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
-// import {  useSelector } from 'react-redux'
 import { useDispatch, useSelector } from 'react-redux';
 import { State, loginFailed, setIsLogged } from '../../Reducer/Reducer';
 
@@ -13,6 +10,13 @@ const Content = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const logged = useSelector((state: State) => state.isLogged);
+
+  useEffect(() => {
+    if (!logged) {
+      const path = `/`;
+      history.push(path);
+    }
+  }, [history, logged])
 
   const logout = () => {
     dispatch(loginFailed(''))
@@ -32,7 +36,7 @@ const Content = () => {
         >
           Log out
           </Button>
-      </div> : <Redirect to='/' exact path='/' />}
+      </div> : <Redirect push to="/" />}
     </>
   );
 }

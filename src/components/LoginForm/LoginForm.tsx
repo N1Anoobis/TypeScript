@@ -5,12 +5,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import  {State, loginFailed, loginSuccess }  from '../../Reducer/Reducer';
+import { State, loginFailed, loginSuccess } from '../../Reducer/Reducer';
 import { useHistory } from 'react-router-dom';
-import {  useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 const LoginForm = () => {
-  
+
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -24,22 +24,17 @@ const LoginForm = () => {
     const path = `/content`;
     history.push(path);
   }
-  
+
   const failLogin = () => {
     dispatch(loginFailed('Please enter correct email and password containing minimum of 8 digits, 1 number and 1 upper letter'));
   }
-
-  const { isLogged } = useSelector((state:State) => ({
-    isLogged: state.isLogged,
-
-  }));
 
   const handleLogin = (e: any) => {
     e.preventDefault();
     if (formData.mail === 'email@email.com' && formData.password === 'pass') {
       login();
     } else {
-    failLogin();
+      failLogin();
     }
   };
 
@@ -50,9 +45,7 @@ const LoginForm = () => {
     });
   };
 
-  const logged = useSelector((state: State) => state.isLogged);
   const text = useSelector((state: State) => state.helperText);
-  console.log(logged)
 
   return (
     <>
@@ -74,7 +67,7 @@ const LoginForm = () => {
                 name="mail"
                 autoComplete="email"
                 autoFocus
-                onChange={(e)=>handleChange(e)}
+                onChange={(e) => handleChange(e)}
               />
               <TextField
                 variant="outlined"
@@ -86,7 +79,7 @@ const LoginForm = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(e)=>handleChange(e)}
+                onChange={(e) => handleChange(e)}
               />
               <Button
                 type="submit"
