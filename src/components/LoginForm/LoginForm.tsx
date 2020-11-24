@@ -31,7 +31,8 @@ const LoginForm = () => {
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    if (formData.mail === 'email@email.com' && formData.password === 'pass') {
+    //
+    if (formData.mail === 'email@email.com' && formData.password === 'Pasword1') {
       login();
     } else {
       failLogin();

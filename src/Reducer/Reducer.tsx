@@ -1,19 +1,61 @@
+import Axios from 'axios';
+
 export type State = {
     helperText: string
     isError: boolean
     isLogged: boolean
+    msg: string
+    error: object
+    status: number
+};
+
+export const callMockedEndpoint = () => {
+    return async (dispatch, getState) => {
+
+        dispatch(fetchStart());
+        try {
+            let res = await Axios.get(`https://run.mocky.io/v3/b990d747-de72-49f7-a7ee-7b49d2f3f733`)
+            dispatch(fetchSuccess(res.data));
+            dispatch(setStatus(res.status));
+        }
+        catch (e) {
+            dispatch(fetchError(e.message || true));
+        }
+    };
 };
 
 export const initialState: State = {
     helperText: '',
     isError: false,
     isLogged: false,
+    msg: '',
+    error: {},
+    status: 404
 };
 
+export const FETCH_START = 'FETCH_START';
+export const FETCH_SUCCESS = 'FETCH_SUCCESS';
+export const FETCH_ERROR = 'FETCH_ERROR';
 export const LOGIN_SUCCES = 'LOGIN_SUCCES';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const SET_ERROR = 'SET_ERROR';
 export const SET_LOGGED = 'SET_LOGGED';
+
+export const SET_STATUS = 'SET_STATUS';
+
+interface FetchStart {
+    type: typeof FETCH_START
+}
+
+interface FetchError {
+    type: typeof FETCH_ERROR,
+    payload: object
+}
+
+interface FetchSuccess {
+    type: typeof FETCH_SUCCESS,
+    payload: string
+}
 
 interface LoginSuccess {
     type: typeof LOGIN_SUCCES,
@@ -34,7 +76,26 @@ interface SetIsLogged {
     payload: boolean
 }
 
-type ActionType = LoginSuccess | LoginFailed | SetIsError | SetIsLogged;
+interface SetStatus {
+    type: typeof SET_STATUS
+    payload: number
+}
+
+type ActionType = FetchStart | FetchSuccess | FetchError | LoginSuccess | LoginFailed | SetIsError | SetIsLogged | SetStatus;
+
+export const fetchStart = (): FetchStart => ({
+    type: FETCH_START,
+});
+
+export const fetchSuccess = (res: string): FetchSuccess => ({
+    type: FETCH_SUCCESS,
+    payload: res
+});
+
+export const fetchError = (error: object): FetchError => ({
+    type: FETCH_ERROR,
+    payload: error
+});
 
 export const loginSuccess = (): LoginSuccess => ({
     type: LOGIN_SUCCES,
@@ -55,8 +116,30 @@ export const setIsLogged = (boolean): SetIsLogged => ({
     payload: boolean
 });
 
+export const setStatus = (number): SetStatus => ({
+    type: SET_STATUS,
+    payload: number
+});
+
 const reducer = (state: State = initialState, action: ActionType): State => {
     switch (action.type) {
+        case FETCH_START: {
+            return {
+                ...state,
+            };
+        }
+        case FETCH_SUCCESS: {
+            return {
+                ...state,
+                msg: action.payload
+            };
+        }
+        case FETCH_ERROR: {
+            return {
+                ...state,
+                error: action.payload
+            };
+        }
         case LOGIN_SUCCES:
             return {
                 ...state,
@@ -67,7 +150,8 @@ const reducer = (state: State = initialState, action: ActionType): State => {
             return {
                 ...state,
                 helperText: action.payload,
-                isError: true
+                isError: true,
+                msg: ''
             };
         case SET_ERROR:
             return {
@@ -79,6 +163,12 @@ const reducer = (state: State = initialState, action: ActionType): State => {
                 ...state,
                 isLogged: action.payload
             };
+        case SET_STATUS: {
+            return {
+                ...state,
+                status: action.payload
+            };
+        }
         default:
             return state;
     }
