@@ -14,7 +14,7 @@ export const callMockedEndpoint = () => {
 
         dispatch(fetchStart());
         try {
-            let res = await Axios.get(`https://run.mocky.io/v3/b990d747-de72-49f7-a7ee-7b49d2f3f733`)
+            let res = await Axios.get(`https://run.mocky.io/v3/8f996db2-bc37-4a4e-95e9-0220955f51e7`)
             dispatch(fetchSuccess(res.data));
             dispatch(setStatus(res.status));
         }
