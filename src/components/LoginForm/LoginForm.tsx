@@ -22,7 +22,7 @@ const LoginForm = (): JSX.Element => {
   }
 
   const failLogin = () => {
-    dispatch(loginFailed('Please enter correct email and password containing minimum of 8 digits, 1 number and 1 upper letter'));
+    dispatch(loginFailed('Please enter correct email and password containing minimum of 8 characters, 1 number and 1 upper letter'));
   }
 
   type LoginFormData = {
@@ -40,7 +40,7 @@ const LoginForm = (): JSX.Element => {
     }
 
     if (values.password.length < 8) {
-      errors.password = 'Enter at least 8 digits';
+      errors.password = 'Enter at least 8 characters';
     } else if (!/(?=.*[A-Z])/.test(values.password)) {
       errors.password = 'Enter at least one upper letter';
     } else if (!/(?=.*[0-9])/.test(values.password)) {
@@ -56,7 +56,7 @@ const LoginForm = (): JSX.Element => {
     },
     onSubmit: () => {
       //Sensitive data should be stored in env variables for example on heroku
-      if (formik.values.email === 'email@email.com' && formik.values.password === 'Pasword1') {
+      if (formik.values.email === 'email@email.com' && formik.values.password === 'Password1') {
         login();
       } else {
         failLogin();
