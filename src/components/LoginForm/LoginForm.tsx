@@ -86,7 +86,7 @@ const LoginForm = (): JSX.Element => {
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"
+              autoComplete="off"
               autoFocus
               value={formik.values.email}
               error={!!formik.errors.email}
