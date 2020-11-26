@@ -3,7 +3,7 @@ import LoginForm from './components/LoginForm/LoginForm';
 import Content from './components/Content/Content';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { State } from './Reducer/Reducer';
+import { State } from './Redux/Reducer';
 
 const App = () => {
   const logged = useSelector((state: State) => state.isLogged);

@@ -4,8 +4,8 @@ import { Redirect } from 'react-router';
 import Button from '@material-ui/core/Button';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { State, loginFailed, setIsLogged, setStatus } from '../../Reducer/Reducer';
-import { callMockedEndpoint } from '../../Reducer/Reducer';
+import { State, loginFailed, setIsLogged, setStatus } from '../../Redux/Reducer';
+import { callMockedEndpoint } from '../../Redux/Reducer';
 
 const Content = () => {
 

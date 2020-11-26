@@ -10,7 +10,7 @@ export type State = {
 };
 
 export const callMockedEndpoint = () => {
-    return async (dispatch, getState) => {
+    return async (dispatch) => {
 
         dispatch(fetchStart());
         try {
